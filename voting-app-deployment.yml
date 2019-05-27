@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: worker-deployment
+  labels:
+    name: worker-deployment
+    app: demo-voting-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      name: worker-app-pod
+      app: demo-voting-app
+  template:
+    metadata:
+      name: voting-app-pod
+      labels:
+        name: voting-app-pod
+        app: demo-voting-app
+    spec:
+      # we have 1 container per pod here - hence array of 1
+      containers:
+        - name: voting-app
+          # https://hub.docker.com/r/dockersamples/examplevotingapp_vote
+          image: dockersamples/examplevotingapp_vote
+          ports:
+            - containerPort: 80
